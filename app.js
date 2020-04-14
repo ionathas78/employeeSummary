@@ -12,13 +12,14 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const _members = [];
 let _newMember;
-let _newMemberName, _newMemberRole;
+let _newMemberName;
+let _currentIndex = -1;
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 function getMembers() {
-    let memberNumber = _members.length;
+    _currentIndex++;
     _newMember = null;
 
     inquirer.
@@ -26,7 +27,7 @@ function getMembers() {
     {
         name: "name",
         type: "input",
-        message: "Team member #" + memberNumber + " name:"
+        message: "Team member #" + _currentIndex + " name:"
     })
     .then(result => {
         if (result.name == "") {
@@ -41,7 +42,7 @@ function getMembers() {
             {
                 name: "role",
                 type: "list",
-                message: "Team member #" + memberNumber + " role:",
+                message: "Team member #" + _currentIndex + " role:",
                 choices: ["Intern", "Engineer", "Manager"]
             }).then(result => {
                 let _newMemberRole = result.role;
@@ -50,17 +51,17 @@ function getMembers() {
                     {
                         name: "id",
                         type: "input",
-                        message: "            #" + memberNumber + " id:"
+                        message: "            #" + _currentIndex + " id:"
                     },
                     {
                         name: "email",
                         type: "input",
-                        message: "            #" + memberNumber + " email:",
+                        message: "            #" + _currentIndex + " email:",
                     },
                     {
                         name: "avatarURL",
                         type: "input",
-                        message: "            #" + memberNumber + " avatar URL:",
+                        message: "            #" + _currentIndex + " avatar URL:",
                     }
                 ];
 
@@ -69,21 +70,21 @@ function getMembers() {
                         inqPrompts.push({
                             name: "school",
                             type: "input",
-                            message: "            #" + memberNumber + " school:"
+                            message: "            #" + _currentIndex + " school:"
                         });
                         break;
                     case "Engineer":
                         inqPrompts.push({
                             name: "gitHub",
                             type: "input",
-                            message: "            #" + memberNumber + " GitHub username:"
+                            message: "            #" + _currentIndex + " GitHub username:"
                         });
                         break;
                     case "Manager":
                         inqPrompts.push({
                             name: "office",
                             type: "input",
-                            message: "            #" + memberNumber + " Office Number:"
+                            message: "            #" + _currentIndex + " Office Number:"
                         });
                         break;
                     default:

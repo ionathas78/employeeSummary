@@ -51,6 +51,8 @@ jest
 ## Usage
 ```
 node app
+OR
+npm start
 ```
 This app doesn't take any command line parameters.
 

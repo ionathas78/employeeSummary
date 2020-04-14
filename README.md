@@ -29,9 +29,7 @@ THEN I want to be able to transition into the next without any fuss.
 * [Usage](#Usage)
 * [Tests](#Running)
 * [Project Status](#Project)
-* [Frequently Asked Questions](#FAQ)
-* [Questions](#Additional)
-* [Contributing](#Contributing)
+* [Questions](#Questions)
 
 ## Technologies
 Node.js\
@@ -58,24 +56,17 @@ This app doesn't take any command line parameters.
 
 
 ## Running the Tests
-        ```
+```
 npm test
 ```
 The tests for this app check the Classes in the lib folder.
 
-        ## Project Status
+## Project Status
+Complete in v1.0
 
 
-## FAQ
-- 
-- 
-- 
-
-## Additional Questions
-
-
-## Contributing
-Contact us for guidelines on submitting contributions.
+## Questions
+For questions, contact me via email or DM.
 
 ![User Avatar Picture](https://avatars1.githubusercontent.com/u/61706660?v=4)
 ### ionathas78

@@ -11,6 +11,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const _members = [];
 let _newMember;
+let _newMemberName, _newMemberRole;
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -22,50 +23,118 @@ function getMembers() {
     inquirer.
     prompt(
     {
-        name: "id",
+        name: "name",
         type: "input",
-        message: "Team member #" + memberNumber + " id:"
+        message: "Team member #" + memberNumber + " name:"
     })
     .then(result => {
-        if (result.id == ""){
-            renderTeam();
+        if (result.name == "") {
+            renderTeam(_members);
 
         } else {
-            _newMember = {
-                id: result.id,
-                email: "",
-                role: ""
-            };
+            _newMemberName = result.name;
 
-            inquirer
-            .prompt([
+            inquirer.
+            prompt(
             {
                 name: "role",
                 type: "list",
-                message: "    role:",
-                choices: ["manager", "engineer", "intern"]
-            },
-            {
-                name: "email",
-                type: "input",
-                message: "    email:",
-            }])
-            .then(result => {
-                _newMember.email = result.email;
-                _newMember.role = result.role;
+                message: "Team member #" + memberNumber + " role:",
+                choices: ["Intern", "Engineer", "Manager"]
+            }).then(result => {
+                let _newMemberRole = result.role;
+
+                let inqPrompts = [
+                    {
+                        name: "id",
+                        type: "input",
+                        message: "            #" + memberNumber + " id:"
+                    },
+                    {
+                        name: "email",
+                        type: "input",
+                        message: "            #" + memberNumber + " email:",
+                    }
+                ];
+
+                switch (_newMemberRole) {
+                    case "Intern":
+                        inqPrompts.push({
+                            name: "school",
+                            type: "input",
+                            message: "            #" + memberNumber + " school:"
+                        });
+                        break;
+                    case "Engineer":
+                        inqPrompts.push({
+                            name: "gitHub",
+                            type: "input",
+                            message: "            #" + memberNumber + " GitHub username:"
+                        });
+                        break;
+                    case "Manager":
+                        inqPrompts.push({
+                            name: "office",
+                            type: "input",
+                            message: "            #" + memberNumber + " Office Number:"
+                        });
+                        break;
+                    default:
+                };
+
+                inquirer
+                .prompt(inqPrompts)
+                .then(result => {
+                    _newMember = { 
+                        name: _newMemberName,
+                        role: _newMemberRole,
+                        id: result.id,
+                        email: result.email,
+                        additional: ""
+                    };
+                    if (result.gitHub) {
+                        _newMember.additional = result.gitHub;
+                    };
+                    if (result.school) {
+                        _newMember.additional = result.school;
+                    };
+                    if (result.office) {
+                        _newMember.additional = result.office;
+                    };
+
+                    switch (_newMemberRole) {
+                        case "Employee":
+                            _members.push(new Employee(_newMemberName, _newMember.id, _newMember.email));
+                            break;
+                        case "Engineer":
+                            _members.push(new Engineer(_newMemberName, _newMember.id, _newMember.email, _newMember.additional));
+                            break;
+                        case "Intern":
+                            _members.push(new Intern(_newMemberName, _newMember.id, _newMember.email, _newMember.additional));
+                            break;
+                        case "Manager":
+                            _members.push(new Manager(_newMemberName, _newMember.id, _newMember.email, _newMember.additional));
+                            break;
+                        default:
+                    };
     
-                _members.push(_newMember);
-                console.log("------------");
-                getMembers();
-            });            
+                    // _members.push(_newMember);
+                    console.log("------------");
+                    getMembers();
+                });
+            });    
         };
-    })
+    });
 };
 
-function renderTeam() {
-    _members.forEach(element => {
+function renderTeam(memberArray) {
+    memberArray.forEach(element => {
         console.log(element.role + ": " + element.id + " - " + element.email);
     });
+
+    let htmlCode = render(memberArray);
+    let outputFile = outputPath;
+    fs.writeFile(outputFile, htmlCode, () => console.log("File '" + outputFile + "' written!"));
 };
 
 

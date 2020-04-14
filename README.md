@@ -34,9 +34,9 @@ THEN I want to be able to transition into the next without any fuss.
 * [Contributing](#Contributing)
 
 ## Technologies
-Node.js
-Jest
-Inquirer
+Node.js\
+Jest\
+Inquirer\
 Axios w/ GitHub API
 
 ## Getting Started

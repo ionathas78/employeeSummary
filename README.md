@@ -23,7 +23,7 @@ THEN I want to be able to transition into the next without any fuss.
 ```
 
 ![Output image](./Assets/employeeSummary_Screenshot.jpg)
-![Usage runthrough](./Assets/employeeSummary_Runthru_small.gif)
+![Usage runthrough](./Assets/employeeSummary_Runthru_small.gif)  
 _*Ares, Harlequin, Jake Armitage, and Shadowrun belong to [Catalyst Game Labs](https://www.catalystgamelabs.com)_
 
 ## Table of Contents

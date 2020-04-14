@@ -1,6 +1,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const gitInquire = require("./gitInquire");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -34,6 +35,7 @@ function getMembers() {
         } else {
             _newMemberName = result.name;
 
+
             inquirer.
             prompt(
             {
@@ -54,6 +56,11 @@ function getMembers() {
                         name: "email",
                         type: "input",
                         message: "            #" + memberNumber + " email:",
+                    },
+                    {
+                        name: "avatarURL",
+                        type: "input",
+                        message: "            #" + memberNumber + " avatar URL:",
                     }
                 ];
 
@@ -90,10 +97,12 @@ function getMembers() {
                         role: _newMemberRole,
                         id: result.id,
                         email: result.email,
+                        avatarURL: result.avatarURL,
                         additional: ""
                     };
                     if (result.gitHub) {
                         _newMember.additional = result.gitHub;
+
                     };
                     if (result.school) {
                         _newMember.additional = result.school;
@@ -104,16 +113,20 @@ function getMembers() {
 
                     switch (_newMemberRole) {
                         case "Employee":
-                            _members.push(new Employee(_newMemberName, _newMember.id, _newMember.email));
+                            _members.push(new Employee(_newMemberName, _newMember.id, _newMember.email, _newMember.avatarURL));
                             break;
                         case "Engineer":
-                            _members.push(new Engineer(_newMemberName, _newMember.id, _newMember.email, _newMember.additional));
+                            if (_newMember.avatarURL == "") {
+                                gitInquire.getGitUser(_newMember, _members);
+                            } else {
+                                _members.push(new Engineer(_newMemberName, _newMember.id, _newMember.email, _newMember.avatarURL, _newMember.additional));
+                            };
                             break;
                         case "Intern":
-                            _members.push(new Intern(_newMemberName, _newMember.id, _newMember.email, _newMember.additional));
+                            _members.push(new Intern(_newMemberName, _newMember.id, _newMember.email, _newMember.avatarURL, _newMember.additional));
                             break;
                         case "Manager":
-                            _members.push(new Manager(_newMemberName, _newMember.id, _newMember.email, _newMember.additional));
+                            _members.push(new Manager(_newMemberName, _newMember.id, _newMember.email, _newMember.avatarURL, _newMember.additional));
                             break;
                         default:
                     };
@@ -128,9 +141,9 @@ function getMembers() {
 };
 
 function renderTeam(memberArray) {
-    memberArray.forEach(element => {
-        console.log(element.role + ": " + element.id + " - " + element.email);
-    });
+    // memberArray.forEach(element => {
+    //     console.log(element.role + ": " + element.id + " - " + element.email);
+    // });
 
     let htmlCode = render(memberArray);
     let outputFile = outputPath;
